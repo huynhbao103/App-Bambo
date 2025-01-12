@@ -3,9 +3,9 @@ name: Deploy
 on:
   push:
     branches:
-        - develop
-        - main
-        - 'feature/**'
+      - develop
+      - main
+      - 'feature/**'
 
 jobs:
   eas-build:
@@ -29,14 +29,18 @@ jobs:
         with:
           node-version: '22.x'
 
+      # Cài đặt dependencies
+      - name: Install dependencies
+        run: npm install
+
       # Setup Expo và build ứng dụng
       - name: Setup Expo
         uses: expo/expo-github-action@v7
         with:
-          expo-version: latest
-          eas-version: latest
-          token: ${{ secrets.EXPO_TOKEN }}
+         expo-version: latest
+         eas-version: latest
+         token: ${{ secrets.EXPO_TOKEN }}
 
       # Publish build (EAS Build)
       - name: Publish build
-        run: eas build --platform android --profile preview
+        run: eas build --platform android --profile preview --no-cache --verbose
