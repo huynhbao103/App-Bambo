@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Bambon",
-    "slug": "Bambon",
+    "slug": "bambon",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -12,6 +12,7 @@
       "supportsTablet": true
     },
     "android": {
+      "package": "com.example.bambon",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -36,6 +37,15 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "e0e24047-a115-4b1e-aef9-ed24ec88face"
+      }
+    },
+    "owner": "huynhbao103"
   }
 }

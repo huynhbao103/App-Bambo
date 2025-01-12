@@ -1,0 +1,42 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+        - develop
+        - main
+        - 'feature/**'
+
+jobs:
+  eas-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Kiểm tra EXPO_TOKEN
+      - name: Check for EXPO_TOKEN
+        run: |
+          if [ -z "${{ secrets.EXPO_TOKEN }}" ]; then
+            echo "You must provide an EXPO_TOKEN secret linked to this project's Expo account in this repo's secrets."
+            exit 1
+          fi
+
+      # Checkout repository
+      - uses: actions/checkout@v4
+
+      # Setup Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+
+      # Setup Expo và build ứng dụng
+      - name: Setup Expo
+        uses: expo/expo-github-action@v7
+        with:
+          expo-version: latest
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      # Publish build (EAS Build)
+      - name: Publish build
+        run: eas build --platform android --profile preview
