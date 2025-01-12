@@ -43,4 +43,4 @@ jobs:
 
       # Publish build (EAS Build)
       - name: Publish build
-        run: eas build --platform android --profile preview --no-cache --verbose
+        run: eas build --platform android --profile preview --non-interactive
