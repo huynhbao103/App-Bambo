@@ -10,7 +10,6 @@ on:
     branches:
       - develop
       - main
-
 jobs:
  development-build:
     runs-on: ubuntu-latest
@@ -39,6 +38,12 @@ jobs:
 
       - name: Run Lint
         run: npm run lint
+        
+      - name: Run Jest tests
+        run: |
+          if [ -z "$(find src -name '*.test.*' -o -name '*.spec.*')" ]; then
+            echo "No tests found, skipping Jest..."
+          else
+            npm run test -- --coverage
+          fi
 
-      - name: Run Tests
-        run: npm run test -- --coverage
