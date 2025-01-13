@@ -13,11 +13,9 @@
       "channel": "staging",
       "android": {
         "buildType": "apk",
-        "buildNumber": "1" 
       },
       "ios": {
         "simulator": true,
-        "buildNumber": "1"
       }
     },
     "production": {
