@@ -65,7 +65,7 @@ const Screen2: React.FC = () => {
           marginTop: 20,
         }}
       >
-        <Text className="text-white text-lg font-bold">Tiếp tục</Text>
+        <Text style={{ color: "white", fontSize: 18, fontWeight: "bold" }}>Tiếp tục</Text>
       </Link>
       <View className="flex-row mt-5">
         <View className="w-3 h-3 rounded-full bg-gray-300 mx-1" />

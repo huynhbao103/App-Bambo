@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { View, ScrollView, TextInput, Button, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import axios from 'axios';
-import { Link } from 'expo-router';
+import { View, ScrollView, TextInput, Button, Text, StyleSheet, Alert } from 'react-native';
+import { Link, useRouter } from 'expo-router';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { auth } from '@/firebaseConfig'; // Đường dẫn đến file cấu hình Firebase
 
 const RegisterScreen: React.FC = () => {
   const [name, setName] = useState<string>('');
@@ -9,23 +10,22 @@ const RegisterScreen: React.FC = () => {
   const [password, setPassword] = useState<string>('');
   const [error, setError] = useState<string>('');
   const [successMessage, setSuccessMessage] = useState<string>('');
+  const router = useRouter();
 
   const register = async () => {
     try {
-      const response = await axios.post<{ message: string }>('http://192.168.96.190:3000/api/auth/register', {
-        name,
-        email,
-        password,
-      });
-      console.log('Response Status:', response.status);
-      if (response.status === 200 && response.data.message === 'User registered') {
-        setSuccessMessage('Registration successful!');
-      } else {
-        setError('Registration failed');
-      }
-    } catch (err) {
-      console.error('Error:', err);
-      setError('Registration failed');
+      console.log('🔄 Đang tạo tài khoản ...');
+
+      // Đăng ký tài khoản với email và password
+      const user = await createUserWithEmailAndPassword(auth, email, password);
+      if( user )
+        setSuccessMessage('🎉 Đăng ký thành công! Chuyển đến đăng nhập...');
+      setTimeout(() => {
+        router.push('/screen/LoginScreen');
+      }, 1500);    
+    } catch (err: any) {
+      console.error('❌ Lỗi đăng ký:', err.message);
+      setError(err.message);
     }
   };
 
@@ -43,6 +43,7 @@ const RegisterScreen: React.FC = () => {
         placeholder="Email"
         value={email}
         onChangeText={setEmail}
+        keyboardType="email-address"
       />
       <TextInput
         style={styles.input}
@@ -53,8 +54,10 @@ const RegisterScreen: React.FC = () => {
       />
       {error && <Text style={styles.errorText}>{error}</Text>}
       {successMessage && <Text style={styles.successText}>{successMessage}</Text>}
-      <Button title="Register" onPress={register} color="#32CD32" />
-      <Link href='/screen/LoginScreen' style={styles.loginLink}>
+       <View  style={styles.buttonContainer}>
+       <Button title="Register" onPress={register} color="white" />
+       </View>
+      <Link href="/screen/LoginScreen" style={styles.loginLink}>
         <Text style={styles.loginText}>Already have an account? Login</Text>
       </Link>
     </ScrollView>
@@ -100,6 +103,12 @@ const styles = StyleSheet.create({
   loginText: {
     color: '#32CD32',
     fontWeight: 'bold',
+  },
+  buttonContainer: {
+    backgroundColor: '#32CD32',
+    marginBottom: 15,
+    borderRadius: 10,
+    width: '50%',
   },
 });
 

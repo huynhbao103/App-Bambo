@@ -1,17 +1,19 @@
 import { Tabs } from 'expo-router';
 import React from 'react';
-import { Platform, TouchableOpacity, StyleSheet } from 'react-native';
+import { Platform, StyleSheet, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { StatusBar } from 'expo-status-bar';
-import { Link } from 'expo-router';  // Import Link từ expo-router
+import { Link } from 'expo-router';
 import "../global.css";
 
 const CameraButton = () => (
-  <Link href="/(tabs)/camera" style={styles.cameraButton}> {/* Dùng Link để điều hướng đến CameraScreen */}
+  <Link href="/(tabs)/camera" style={styles.cameraButton}>
+  <View style={styles.cameraIconWrapper}>
     <Ionicons name="camera" size={28} color="white" />
-  </Link>
+  </View>
+</Link>
 );
 
 export default function TabLayout() {
@@ -25,12 +27,7 @@ export default function TabLayout() {
         screenOptions={{
           tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
           headerShown: false,
-          tabBarStyle: Platform.select({
-            ios: {
-              position: 'absolute',
-            },
-            default: {},
-          }),
+          tabBarStyle: styles.tabBarStyle,
         }}
       >
         <Tabs.Screen
@@ -43,7 +40,7 @@ export default function TabLayout() {
         <Tabs.Screen
           name="camera"
           options={{
-            tabBarButton: () => <CameraButton />, // Sử dụng CameraButton ở đây để link đến /camera
+            tabBarButton: () => <CameraButton />,
           }}
         />
         <Tabs.Screen
@@ -59,6 +56,15 @@ export default function TabLayout() {
 }
 
 const styles = StyleSheet.create({
+  tabBarStyle: {
+    position: 'absolute',
+    height: 60,
+    backgroundColor: 'white',
+    borderTopWidth: 1,
+    borderTopColor: '#ddd',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   cameraButton: {
     width: 60,
     height: 60,
@@ -66,8 +72,17 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.light.tint,
     justifyContent: 'center',
     alignItems: 'center',
+    display: 'flex', // Đảm bảo flexbox hoạt động trong Link
     position: 'absolute',
-    bottom: 20,
+    bottom: 5,
+    alignSelf: 'center',
     zIndex: 10,
   },
+  cameraIconWrapper: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%', // Đảm bảo icon không bị lệch
+    height: '100%',
+  },
 });
+

@@ -16,7 +16,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import {jwtDecode} from "jwt-decode";
 
 // API URL
-const API_URL = "http://192.168.96.190:3000/api/transactions";
+const API_URL = "http://192.168.96.217:3000/api/transactions";
 
 export default function HomeScreen() {
   const [transactions, setTransactions] = useState<any[]>([]);

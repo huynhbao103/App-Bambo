@@ -48,6 +48,7 @@
       "typedRoutes": true
     },
     "extra": {
+        "OCR_API_KEY": "K81470283688957",
       "router": {
         "origin": false
       },

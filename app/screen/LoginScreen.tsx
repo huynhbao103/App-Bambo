@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, Text, StyleSheet } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios from 'axios';
+import { View, TextInput, Button, Text, StyleSheet, Alert } from 'react-native';
 import { Link, useRouter } from 'expo-router';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../../firebaseConfig'; 
+
 
 const LoginScreen: React.FC = () => {
   const [email, setEmail] = useState<string>('');
@@ -12,26 +13,16 @@ const LoginScreen: React.FC = () => {
 
   const login = async () => {
     try {
-      console.log('Đang gửi yêu cầu đăng nhập...');
-
-      const response = await axios.post<{ token: string }>('http://192.168.96.190:3000/api/auth/login', {
-        email,
-        password,
-      });
-
-      console.log('Phản hồi từ server:', response.data);
-
-      const token: string = response.data.token;
-
-      // 🟢 Lưu token vào AsyncStorage
-      await AsyncStorage.setItem('token', token);
-      console.log('Token đã lưu:', token);
-
-      // 🔄 Chuyển hướng đến Home
+      console.log('🔄 Đang đăng nhập...');
+      
+      // Firebase Auth login
+      const user = await signInWithEmailAndPassword(auth, email, password);
+      if( user )  
       router.push('/(tabs)/home');
+      console.log('✅ Đăng nhập thành công:');
     } catch (err: any) {
-      console.error('Lỗi đăng nhập:', err.response ? err.response.data : err.message);
-      setError(err.response?.data?.message || 'Sai email hoặc mật khẩu!');
+      console.error('❌ Lỗi đăng nhập:', err.message);
+      setError('Sai email hoặc mật khẩu!');
     }
   };
 
@@ -52,7 +43,9 @@ const LoginScreen: React.FC = () => {
         style={styles.input}
       />
       {error && <Text style={styles.errorText}>{error}</Text>}
-      <Button title="Login" onPress={login} color="#32CD32" />
+      <View  style={styles.buttonContainer}>
+        <Button title="Login" onPress={login} color="white" />
+      </View>
       <Link href="/screen/RegisterScreen">
         <Text style={styles.registerLink}>Go to Register</Text>
       </Link>
@@ -88,7 +81,12 @@ const styles = StyleSheet.create({
   errorText: {
     color: 'red',
     textAlign: 'center',
+  },
+  buttonContainer: {
+    backgroundColor: '#32CD32',
     marginBottom: 15,
+    borderRadius: 10,
+    width: '50%',
   },
   registerLink: {
     marginTop: 20,
