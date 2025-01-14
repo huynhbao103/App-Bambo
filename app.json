@@ -55,6 +55,12 @@
         "projectId": "e0e24047-a115-4b1e-aef9-ed24ec88face"
       }
     },
-    "owner": "huynhbao103"
+    "owner": "huynhbao103",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/e0e24047-a115-4b1e-aef9-ed24ec88face"
+    }
   }
 }

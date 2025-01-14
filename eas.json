@@ -12,12 +12,10 @@
       "distribution": "internal",
       "channel": "staging",
       "android": {
-        "buildType": "apk",
-        "buildNumber": "1" 
+        "buildType": "apk"
       },
       "ios": {
-        "simulator": true,
-        "buildNumber": "1"
+        "simulator": true
       }
     },
     "production": {
